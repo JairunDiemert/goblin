@@ -7,6 +7,8 @@
 
 import { dl } from '../util/log.js';
 
+var enableDebugLog = false;  // set to true to enable debug logging
+
 export default class Program {
 
 	/**
@@ -88,11 +90,11 @@ export default class Program {
 	createShader(type) {
 		const file = this._path + this._name + Program.SHADER_EXTENSIONS.get(type);
 		const c = this._context;
-		dl(`Loading : ${file}`);
+		if (enableDebugLog) dl(`Loading : ${file}`);
 		return fetch(file)
 			.then(response => response.text())
 			.then((body) => {
-				dl(`Creating ${type==WebGLRenderingContext.VERTEX_SHADER?'vertex':'fragment'} shader for program "${this._name}".`);
+				if (enableDebugLog) dl(`Creating ${type==WebGLRenderingContext.VERTEX_SHADER?'vertex':'fragment'} shader for program "${this._name}".`);
 				const shader = c.createShader(type);
 				c.shaderSource(shader, body);
 				c.compileShader(shader);
@@ -104,7 +106,7 @@ export default class Program {
 	}
 
 	compileProgram(shaders) {
-		dl(`Compiling program ${this._name}.`);
+		if (enableDebugLog) dl(`Compiling program ${this._name}.`);
 		const c = this._context;
 		this._program = c.createProgram();
 		shaders.forEach(shader => c.attachShader(this._program, shader));
@@ -120,7 +122,7 @@ export default class Program {
 	}
 
 	qualify(parameter) {
-		dl(`Initializing shader ${parameter==WebGLRenderingContext.ACTIVE_ATTRIBUTES?'attributes':'uniforms'}.`);
+		if (enableDebugLog) dl(`Initializing shader ${parameter==WebGLRenderingContext.ACTIVE_ATTRIBUTES?'attributes':'uniforms'}.`);
 		const c = this._context;
 		const num = c.getProgramParameter(this._program, parameter);
 		const p_func = Program.QUALIFYING_FUNCTION.get(parameter);
@@ -132,7 +134,7 @@ export default class Program {
 			const info = c[a_func](this._program, idx);
 			const location = c[l_func](this._program, info.name);
 			storage[info.name] = location;
-			dl(`Found ${p_func} : ${info.name} with index ${location}`);
+			if (enableDebugLog) dl(`Found ${p_func} : ${info.name} with index ${location}`);
 		}
 	}
 

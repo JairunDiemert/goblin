@@ -18,6 +18,8 @@
 	 */
 	var DEFAULT_TEXTURE_PATH = '/textures/';
 
+	var enableDebugLog = false;  // set to true to enable debug logging
+
 	/**
 	 * The WEBGLContext factory
 	 * @constructor
@@ -190,7 +192,7 @@
 
 		if(this.programExists(name)) {
 			var p = this.getProgram(name);
-			_.dl('Program already exists with status ' + p.state);
+			if (enableDebugLog) _.dl('Program already exists with status ' + p.state);
 			// program already downloaded and compiled
 			// directly call the callback
 			if(p.state === 'ready')
@@ -329,9 +331,9 @@
 		for(var index = 0 ; index < len ; index++) {
 			// Dynamically calls appropriate function getActive{uniform|attribute}
 			var qualifier = this.c['getActive' + fname](p.program, index).name;
-			_.dl('Looking for ' + fname + ' ' + qualifier + ' location.');
+			if (enableDebugLog) _.dl('Looking for ' + fname + ' ' + qualifier + ' location.');
 			res[qualifier] = this.c['get'+ fname + 'Location'](p.program, qualifier);
-			_.dl('found : ' + res[qualifier]);
+			if (enableDebugLog) _.dl('found : ' + res[qualifier]);
 		}
 	};
 
@@ -568,7 +570,7 @@
 		// Check if the texture already exists
 		var texture = this.getTexImage(options.id);
 		if (texture) {
-			_.dl(`Texture ${options.id} already exists.`);
+			if (enableDebugLog) _.dl(`Texture ${options.id} already exists.`);
 
 			if (texture.state === 'ready') {
 				callback();
