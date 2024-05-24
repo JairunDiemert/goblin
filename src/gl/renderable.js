@@ -9,6 +9,8 @@
 import { dl } from '../util/log.js';
 import Object3D from '../3d/object3d.js';
 
+var enableDebugLog = false;  // set to true to enable debug logging
+
 /**
  * A class to represent an Object3D that can be rendered on a screen (by a
  * WebGLRenderer).
@@ -53,7 +55,7 @@ export default class Renderable extends Object3D {
 	}
 
 	initialize(renderer) {
-		dl(`Initializing Renderable with id ${this.id}.`);
+		if (enableDebugLog) dl(`Initializing Renderable with id ${this.id}.`);
 
 		renderer.useProgram(this._program);
 		const program = renderer.activeProgram;
