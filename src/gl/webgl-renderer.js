@@ -73,7 +73,7 @@ export default class WebGLRenderer {
 
 	/**
 	 * Disables the specified WebGL capability with transparency state considerations.
-	 * 
+	 *
 	 * @param {number} capability - The WebGL capability to disable (e.g., gl.BLEND)
 	 */
 	disable(capability) {
@@ -319,7 +319,7 @@ export default class WebGLRenderer {
 
 	/**
 	 * Starts the animation loop for continuous rendering.
-	 * 
+	 *
 	 * **Animation Loop Architecture:**
 	 * - Uses requestAnimationFrame for smooth 60fps rendering and VSync coordination
 	 * - Calculates delta time for frame-rate independent animations transitions
